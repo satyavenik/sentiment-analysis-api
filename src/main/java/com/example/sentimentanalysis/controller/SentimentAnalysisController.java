@@ -1,5 +1,6 @@
 package com.example.sentimentanalysis.controller;
 
+import com.example.sentimentanalysis.model.SentimentResponse;
 import com.example.sentimentanalysis.service.SentimentAnalysisService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,9 +22,9 @@ public class SentimentAnalysisController {
     }
 
     @PostMapping("/analyze")
-    @Operation(summary = "Analyze sentiment", description = "Analyzes the sentiment of the provided text and returns POSITIVE, NEGATIVE, or NEUTRAL")
-    public ResponseEntity<String> analyzeSentiment(@RequestBody String text) {
-        String sentiment = sentimentAnalysisService.analyzeSentiment(text);
-        return ResponseEntity.ok(sentiment);
+    @Operation(summary = "Analyze sentiment", description = "Analyzes the sentiment of the provided text and returns sentiment, confidence score, and original text")
+    public ResponseEntity<SentimentResponse> analyzeSentiment(@RequestBody String text) {
+        SentimentResponse response = sentimentAnalysisService.analyzeSentiment(text);
+        return ResponseEntity.ok(response);
     }
 }

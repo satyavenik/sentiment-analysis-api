@@ -1,0 +1,103 @@
+{
+  "info": {
+    "name": "Sentiment API",
+    "description": "Postman collection for POST /api/sentiment/analyze",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Analyze Sentiment - Negative Example",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "\"I went to store and staff is rude and un welcoming\"",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/sentiment/analyze",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "sentiment",
+            "analyze"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Negative sentiment response",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"sentiment\": \"NEGATIVE\",\n  \"score\": 0.85,\n  \"text\": \"I went to store and staff is rude and un welcoming\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Analyze Sentiment - Positive Example",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Accept",
+            "value": "*/*"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "\"This repo is so helpful and creative! The documentation is excellent and the API works perfectly.\"",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/sentiment/analyze",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "sentiment",
+            "analyze"
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Positive sentiment response",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"sentiment\": \"POSITIVE\",\n  \"score\": 0.92,\n  \"text\": \"This repo is so helpful and creative! The documentation is excellent and the API works perfectly.\"\n}"
+        }
+      ]
+    }
+  ]
+}
+

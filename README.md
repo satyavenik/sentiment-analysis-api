@@ -1,94 +1,76 @@
-# sentiment-analysis-api
+# Sentiment Analysis API
 
-This project uses a Large Language Model (LLM) to detect sentiment in any input text and classifies it as POSITIVE, NEGATIVE, or NEUTRAL. Demonstrates how to build an AI-powered REST API with prompt engineering, reusable templates, and Java integration using Spring AI.
+This repository provides a small Spring Boot service exposing a sentiment analysis endpoint.
 
-## Technologies Used
-
-- **Spring Boot 3.5.7** - Application framework
-- **Spring AI** - ChatClient for LLM integration
-- **OpenAPI/Swagger** - API documentation
-- **Maven** - Build tool
-- **Java 17** - Programming language
+## What I added
+- `postman_collection.json` — Postman collection to import the `POST /api/sentiment/analyze` request.
+- `README.md` (this file) — usage and examples.
 
 ## Prerequisites
+- Java 17+ and Maven installed and on PATH
+- (Optional) `OPENAI_API_KEY` environment variable if the app is configured to use OpenAI via Spring AI
 
-- Java 17 or higher
-- Maven 3.6+
-- OpenAI API Key (for LLM integration)
+## Run the application
+From the project root run:
 
-## Configuration
-
-Before running the application, set your OpenAI API key as an environment variable:
-
-```bash
-export OPENAI_API_KEY=your-api-key-here
-```
-
-Or you can set it in the `application.properties` file.
-
-## Building the Project
-
-```bash
-mvn clean install
-```
-
-## Running the Application
-
-```bash
+```cmd
 mvn spring-boot:run
 ```
 
-The application will start on `http://localhost:8080`
+The server listens on port 8080 (configured in `src/main/resources/application.properties`).
 
-## API Documentation
+## Import Postman collection
+1. Open Postman -> File -> Import -> Choose Files -> select `postman_collection.json` in the project root.
+2. The collection includes a single request `Analyze Sentiment` configured for `POST http://localhost:8080/api/sentiment/analyze`.
 
-Once the application is running, you can access the Swagger UI at:
+## Examples
 
-```
-http://localhost:8080/swagger-ui.html
-```
+The API returns a JSON response with:
+- **sentiment**: One of `POSITIVE`, `NEGATIVE`, or `NEUTRAL`
+- **score**: Confidence value between 0.0 and 1.0 (higher means more confident)
+- **text**: The original text that was analyzed
 
-## API Endpoints
+### Example 1: Negative Sentiment
 
-### Analyze Sentiment
-
-**Endpoint:** `POST /api/sentiment/analyze`
-
-**Request Body:** Plain text string
-
-**Example:**
-
-```bash
-curl -X POST http://localhost:8080/api/sentiment/analyze \
-  -H "Content-Type: text/plain" \
-  -d "This is a wonderful day!"
+**Request (Windows `cmd.exe`):**
+```cmd
+curl -X POST "http://localhost:8080/api/sentiment/analyze" -H "accept: */*" -H "Content-Type: application/json" -d "\"I went to store and staff is rude and un welcoming\""
 ```
 
-**Response:** `POSITIVE`, `NEGATIVE`, or `NEUTRAL`
-
-## Project Structure
-
-```
-src/
-├── main/
-│   ├── java/com/example/sentimentanalysis/
-│   │   ├── SentimentAnalysisApplication.java       # Main application class
-│   │   ├── controller/
-│   │   │   └── SentimentAnalysisController.java    # REST controller
-│   │   └── service/
-│   │       └── SentimentAnalysisService.java       # Service layer with ChatClient
-│   └── resources/
-│       └── application.properties                   # Application configuration
-└── test/
-    └── java/com/example/sentimentanalysis/
-        └── controller/
-            └── SentimentAnalysisControllerTest.java # Controller tests
+**Response:**
+```json
+{
+  "sentiment": "NEGATIVE",
+  "score": 0.85,
+  "text": "I went to store and staff is rude and un welcoming"
+}
 ```
 
-## Features
+### Example 2: Positive Sentiment
 
-- REST API endpoint for sentiment analysis
-- Integration with OpenAI's LLM via Spring AI ChatClient
-- Swagger/OpenAPI documentation
-- Unit tests for controller layer
-- Maven build configuration
+**Request (Windows `cmd.exe`):**
+```cmd
+curl -X POST "http://localhost:8080/api/sentiment/analyze" -H "accept: */*" -H "Content-Type: application/json" -d "\"This repo is so helpful and creative! The documentation is excellent and the API works perfectly.\""
+```
+
+**Response:**
+```json
+{
+  "sentiment": "POSITIVE",
+  "score": 0.92,
+  "text": "This repo is so helpful and creative! The documentation is excellent and the API works perfectly."
+}
+```
+
+### Notes:
+- The request body is a JSON string (hence the escaped quotes `\"...\"`).
+- If your API expects a different JSON shape (e.g., `{ "text": "..." }`), adjust the Postman body and the curl `-d` accordingly.
+- Higher scores indicate stronger confidence in the sentiment classification.
+
+## Troubleshooting
+- If the server does not start, confirm Java and Maven versions and check logs printed by `mvn spring-boot:run`.
+- If using OpenAI integration ensure `OPENAI_API_KEY` is set in your environment (the project uses `spring.ai.openai.api-key` in `application.properties`).
+
+---
+Generated: automatically added Postman collection and usage README.
+
